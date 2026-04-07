@@ -7,7 +7,7 @@ import numpy as np
 from copy import deepcopy
 
 # from utils import calculate_perplexity
-from utils import get_ptb_dataset, Vocab
+from utils import get_ptb_dataset, get_wiki_dataset, Vocab
 from utils import ptb_iterator, sample
 from utils import weights_init
 import torch.nn.functional as F
@@ -30,7 +30,8 @@ class Attention(nn.Module):
         encoder_outputs = encoder_outputs.permute(1,0,2)
         #print(encoder_outputs.size())
         #print(decoder_hidden.size())
-        # Calculate the attention scores.
+        # Calculate the attention scores. 
+        # attention is dot-product attention
         scores = torch.bmm(encoder_outputs, decoder_hidden.unsqueeze(2)).squeeze(2)  # (batch_size, seq_len)
         
         attn_weights = F.softmax(scores, dim=1)  # (batch_size, seq_len)
@@ -94,16 +95,23 @@ class RNNLM_Model(nn.Module):
     input_x = self.add_embedding(input_x)
     #Next, compute the hidden states for different steps 
     rnn_outputs, final_state = self.add_LSTM_model(input_x, initial_state)
-    context_vector, attn_weights = self.attention(rnn_outputs,final_state[0])
-    concatenated_tensors = [torch.cat((tensor, context_vector), dim=1) for tensor in rnn_outputs]
-    input_tensor = torch.stack(concatenated_tensors, dim=1)
+    # context_vector, attn_weights = self.attention(rnn_outputs,final_state[0])
+    # concatenated_tensors = [torch.cat((tensor, context_vector), dim=1) for tensor in rnn_outputs]
+
+    new_outputs = []
+
+    for h_t in rnn_outputs:
+        context_t, attn_weights = self.attention(rnn_outputs, h_t)
+        combined = torch.cat((h_t, context_t), dim=1)
+        new_outputs.append(combined)
+        
+    input_tensor = torch.stack(new_outputs, dim=1)
     #print(input_tensor.size())
     transformed_tensor = self.linear_layer(input_tensor)
     #print(transformed_tensor.size())
-    list_of_tensors = torch.split(transformed_tensor, split_size_or_sections=1, dim=1)
-    list_of_tensors = list(list_of_tensors)
+    list_of_tensors = torch.split(transformed_tensor, 1, dim=1)
     #print(len(list_of_tensors))
-    list_of_tensors = [tensor.squeeze(1) for tensor in list_of_tensors]
+    list_of_tensors = [t.squeeze(1) for t in list_of_tensors]
     #print(list_of_tensors[0].size())
     #final_state = (context_vector,context_vector)
     #Compute the prediction of different steps 

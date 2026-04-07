@@ -56,6 +56,28 @@ def get_ptb_dataset(dataset='train'):
         # https://github.com/tensorflow/tensorflow/blob/master/tensorflow/models/rnn/ptb/reader.py#L31
         yield '<eos>'
 
+
+def get_wiki_dataset(dataset='train'):
+  fn = 'data/wiki/wiki.{}.txt'
+  with open(fn.format(dataset)) as f:
+    for line in f:
+        for word in line.split():
+            yield word
+        yield '<eos>'
+
+
+# def get_text_dataset(file_path):
+#     with open(file_path, encoding="utf-8") as f:
+#         for line in f:
+#             for word in line.split():
+#                 yield word
+#             yield '<eos>'
+
+# def get_combined_dataset(files):
+#     for file in files:
+#         yield from get_text_dataset(file)
+
+
 def ptb_iterator(raw_data, batch_size, num_steps):
   # Pulled from https://github.com/tensorflow/tensorflow/blob/master/tensorflow/models/rnn/ptb/reader.py#L82
   raw_data = np.array(raw_data, dtype=np.int32)
