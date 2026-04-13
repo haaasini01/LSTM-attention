@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-torch>=1.0.0
-numpy>=1.16.0
-matplotlib>=3.0.0
-=======
 torch>=2.0.0
 numpy>=1.21.0
 matplotlib>=3.5.0
->>>>>>> 330675e (Stop tracking ckpt.pth)
