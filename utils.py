@@ -59,7 +59,7 @@ def get_ptb_dataset(dataset='train'):
 
 def get_wiki_dataset(dataset='train'):
   fn = 'data/wiki/wiki.{}.txt'
-  with open(fn.format(dataset)) as f:
+  with open(fn.format(dataset), encoding='utf-8') as f:
     for line in f:
         for word in line.split():
             yield word

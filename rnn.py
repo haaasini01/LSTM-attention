@@ -51,10 +51,10 @@ class Config(object):
   """
   ### YOUR CODE HERE
   batch_size = 32
-  embed_size = 100
-  hidden_size = 100
-  num_steps = 15 # RNN is unfolded into 'num_steps' time steps for training
-  max_epochs = 15
+  embed_size = 200
+  hidden_size = 150
+  num_steps = 25 # RNN is unfolded into 'num_steps' time steps for training
+  max_epochs = 40
   early_stopping = 2
   dropout = 0.1
   lr = 0.001
@@ -446,15 +446,15 @@ def generate_sentence(model, config, vocab, *args, **kwargs):
 def load_data(debug=False):
   """Loads starter word-vectors and train/dev/test data."""
   vocab = Vocab()
-  vocab.construct(get_ptb_dataset('train'))
+  vocab.construct(get_wiki_dataset('train'))
   encoded_train = np.array(
-    [vocab.encode(word) for word in get_ptb_dataset('train')],
+    [vocab.encode(word) for word in get_wiki_dataset('train')],
     dtype=np.int32)
   encoded_valid = np.array(
-    [vocab.encode(word) for word in get_ptb_dataset('valid')],
+    [vocab.encode(word) for word in get_wiki_dataset('valid')],
     dtype=np.int32)
   encoded_test = np.array(
-    [vocab.encode(word) for word in get_ptb_dataset('test')],
+    [vocab.encode(word) for word in get_wiki_dataset('test')],
     dtype=np.int32)
   if debug:
     num_debug = 1024

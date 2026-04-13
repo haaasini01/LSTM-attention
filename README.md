@@ -42,6 +42,20 @@ Load the trained model from checkpoints and generate text.
 - `data/`: Dataset files
 - `logs/`: Training loss logs
 
+## Configuration
+
+Model hyperparameters can be adjusted in the `Config` class in `rnn.py`:
+
+- `batch_size`: Batch size for training
+- `embed_size`: Embedding dimension
+- `hidden_size`: LSTM hidden state size
+- `num_steps`: Sequence length for training
+- `max_epochs`: Maximum training epochs
+- `dropout`: Dropout rate
+- `lr`: Learning rate
+- `num_layers`: Number of LSTM layers
+
+
 ## Troubleshooting
 
 - Ensure PyTorch is installed with CUDA support if using GPU
@@ -50,4 +64,5 @@ Load the trained model from checkpoints and generate text.
 
 ## License
 
-This project is for educational purposes and is free to use.
+
+This project is for educational purposes.
