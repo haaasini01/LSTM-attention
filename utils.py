@@ -44,6 +44,7 @@ class Vocab(object):
 #     perp += -p
 #   return np.exp(perp / len(log_probs))
 
+
 def get_ptb_dataset(dataset='train'):
   fn = 'data/ptb/ptb.{}.txt'
   with open(fn.format(dataset)) as f:
@@ -129,8 +130,6 @@ def sample(a, temperature=1.0):
 #     total_processed_examples += len(x)
 #   # Sanity check to make sure we iterated over all the dataset as intended
 #   assert total_processed_examples == len(data_X), 'Expected {} and processed {}'.format(len(data_X), total_processed_examples)
-
-
 
 def glorot_uniform(t):
   if len(t.size()) == 2:
