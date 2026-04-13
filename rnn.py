@@ -564,20 +564,20 @@ def test_RNNLM():
       best_val_pp = valid_pp
       best_val_epoch = epoch
       state = {'net': our_model.state_dict()} 
-      torch.save(state, './ckpt.pth')
+      torch.save(state, './checkpoints/ckpt.pth')
     if epoch - best_val_epoch > config.early_stopping:
       break
     print('Total time: {}'.format(time.time() - start))
     
   ## After training, we load the model and test it.  
-  checkpoint = torch.load('./ckpt.pth')
+  checkpoint = torch.load('./checkpoints/ckpt.pth')
   our_model.load_state_dict(checkpoint['net'])
   test_pp = run_epoch(our_model, config, model_optimizer, criterion,test_data, losses_test)
   print('=-=' * 5)
   print('Test perplexity: {}'.format(test_pp))
   print('=-=' * 5)
-  np.savetxt('losses_train1.txt', np.array(losses_train_mean_1))
-  np.savetxt('losses_valid1.txt', np.array(losses_valid_mean_1))
+  np.savetxt('logs/losses_train1.txt', np.array(losses_train_mean_1))
+  np.savetxt('logs/losses_valid1.txt', np.array(losses_valid_mean_1))
   ### Then we generate some sentence..  
   gen_config = deepcopy(config)
   gen_config.batch_size = gen_config.num_steps = 1   
